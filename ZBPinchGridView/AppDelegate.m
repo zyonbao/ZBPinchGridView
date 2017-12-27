@@ -47,5 +47,27 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+   UIViewController *viewCtl = [self topViewControllerWithRootViewController:self.window.rootViewController];
+    if ([viewCtl respondsToSelector:@selector(shouldLandscape)]) {
+        return UIInterfaceOrientationMaskLandscapeLeft;
+    }
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIViewController *)topViewControllerWithRootViewController:(UIViewController *)rootViewCtl {
+    if (!rootViewCtl) {
+        return nil;
+    }
+    if ([rootViewCtl isKindOfClass:[UITabBarController class]]) {
+        return [self topViewControllerWithRootViewController:[(UITabBarController*)rootViewCtl selectedViewController]];
+    }else if ([rootViewCtl isKindOfClass:[UINavigationController class]]) {
+        return [self topViewControllerWithRootViewController:[(UINavigationController*)rootViewCtl visibleViewController]];
+    }else if (rootViewCtl.presentedViewController != nil) {
+        return [self topViewControllerWithRootViewController:rootViewCtl.presentedViewController];
+    }
+    
+    return rootViewCtl;
+}
 
 @end

@@ -14,6 +14,8 @@
 		2FAB3B511FEE042A001E2C37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FAB3B4F1FEE042A001E2C37 /* LaunchScreen.storyboard */; };
 		2FAB3B541FEE042A001E2C37 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FAB3B531FEE042A001E2C37 /* main.m */; };
 		2FAB3B5D1FEE0447001E2C37 /* ZBPinchGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FAB3B5C1FEE0447001E2C37 /* ZBPinchGridView.m */; };
+		2FFED0121FF3701500AFB47E /* BaseNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FFED0111FF3701500AFB47E /* BaseNavController.m */; };
+		2FFED0151FF3828500AFB47E /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FFED0141FF3828500AFB47E /* RootViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,10 @@
 		2FAB3B5B1FEE0447001E2C37 /* ZBPinchGridView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBPinchGridView.h; sourceTree = "<group>"; };
 		2FAB3B5C1FEE0447001E2C37 /* ZBPinchGridView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZBPinchGridView.m; sourceTree = "<group>"; };
 		2FAB3B5E1FEE3E4A001E2C37 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		2FFED0101FF3701500AFB47E /* BaseNavController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavController.h; sourceTree = "<group>"; };
+		2FFED0111FF3701500AFB47E /* BaseNavController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseNavController.m; sourceTree = "<group>"; };
+		2FFED0131FF3828500AFB47E /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		2FFED0141FF3828500AFB47E /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,8 +72,12 @@
 				2FAB3B5A1FEE0437001E2C37 /* Source */,
 				2FAB3B441FEE042A001E2C37 /* AppDelegate.h */,
 				2FAB3B451FEE042A001E2C37 /* AppDelegate.m */,
+				2FFED0131FF3828500AFB47E /* RootViewController.h */,
+				2FFED0141FF3828500AFB47E /* RootViewController.m */,
 				2FAB3B471FEE042A001E2C37 /* ViewController.h */,
 				2FAB3B481FEE042A001E2C37 /* ViewController.m */,
+				2FFED0101FF3701500AFB47E /* BaseNavController.h */,
+				2FFED0111FF3701500AFB47E /* BaseNavController.m */,
 				2FAB3B4A1FEE042A001E2C37 /* Main.storyboard */,
 				2FAB3B4D1FEE042A001E2C37 /* Assets.xcassets */,
 				2FAB3B4F1FEE042A001E2C37 /* LaunchScreen.storyboard */,
@@ -158,6 +168,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FAB3B491FEE042A001E2C37 /* ViewController.m in Sources */,
+				2FFED0121FF3701500AFB47E /* BaseNavController.m in Sources */,
+				2FFED0151FF3828500AFB47E /* RootViewController.m in Sources */,
 				2FAB3B541FEE042A001E2C37 /* main.m in Sources */,
 				2FAB3B461FEE042A001E2C37 /* AppDelegate.m in Sources */,
 				2FAB3B5D1FEE0447001E2C37 /* ZBPinchGridView.m in Sources */,

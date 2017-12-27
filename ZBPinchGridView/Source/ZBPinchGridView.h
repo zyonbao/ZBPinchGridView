@@ -29,6 +29,11 @@ IB_DESIGNABLE
 
 @property (nonatomic, assign) UIEdgeInsets contentInsets; // gridview 的 insets. insets 不随 scale 变化而增大 而是固定的 scale
 
+/**
+ * 如果想要最小缩放的时候刚好显示完整表单的[行]或者[列],以[行]为例:
+ * 即为: scale = (pinchView.bounds.height - insets.top - insets.bottom)/(itemHeight+marginH)*countRows
+ * 列为: scale = (pinchView.bounds.width- insets.left - insets.right)/(itemWidth+marginV)*countColumns
+ */
 @property (nonatomic, assign, readonly) CGFloat currentScale; // 当前缩放
 @property (nonatomic, assign, readonly) CGRect innerBounds; // 当前内部视图所在的 bounds
 

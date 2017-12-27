@@ -25,15 +25,25 @@
     _positions = [NSMutableDictionary dictionary];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIDeviceOrientationLandscapeLeft] forKey:@"orientation"];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger:UIDeviceOrientationPortrait] forKey:@"orientation"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
 }
 
 -(void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
 }
+
 
 - (void)gridView:(ZBPinchGridView *)gridView didTapAtColumn:(NSInteger)column row:(NSInteger)row {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:column inSection:row];
@@ -44,6 +54,7 @@
     }
     [gridView setNeedsDisplay];
 }
+
 - (void)gridView:(ZBPinchGridView *)gridView drawInContext:(CGContextRef)context forColumn:(NSInteger)column row:(NSInteger)row frame:(CGRect)frame {
     
     CGContextSetFillColorWithColor(context, [UIColor lightGrayColor].CGColor);
@@ -54,6 +65,22 @@
     [path fill];
     [path stroke];
 }
+
+- (void)shouldLandscape {
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskLandscape;
+}
+
+-(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    return UIInterfaceOrientationLandscapeLeft;
+}
+
 
 
 @end

@@ -39,9 +39,9 @@
 }
 
 - (void)initialConfig {
-    _rowsCount = 24;
-    _columnsCount = 50;
-    _itemWidth = 120;
+    _rowsCount = 20;
+    _columnsCount = 36;
+    _itemWidth = 60;
     _itemHeight = 60;
     _marginH = 4;
     _marginV = 4;
@@ -61,6 +61,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     _innerBounds = (CGRect){-_contentInsets.left, -_contentInsets.top,CGRectGetWidth(self.frame),CGRectGetHeight(self.frame)};
+    _minScale = (CGRectGetHeight(self.frame)-_contentInsets.top-_contentInsets.bottom)/(_rowsCount * (_itemHeight + _marginV));
 }
 
 - (void)initialRecognizers {
@@ -90,7 +91,6 @@
     [self drawGridViews:context];
     [self drawHIndexIndicator:context];
     [self drawVIndexIndicator:context];
-
 }
 
 - (void)drawHIndexIndicator:(CGContextRef)context {
@@ -140,9 +140,6 @@
                                                  CGRectGetWidth(currentRect) * _currentScale,
                                                  CGRectGetHeight(currentRect) * _currentScale
                                                  );
-                if (i==20 && j==32) {
-                    NSLog(@"(20,32):%@",[NSValue valueWithCGRect:currentRect]);
-                }
                 CGContextSaveGState(context);
                 if (self.delegate && [self.delegate respondsToSelector:@selector(gridView:drawInContext:forColumn:row:frame:)]) {
                     [self.delegate gridView:self drawInContext:context forColumn:j row:i frame:rectInBounds];
@@ -174,6 +171,37 @@
         _innerBoundsBeforeGesture = _innerBounds;
     }
 }
+
+- (void)pinchRecogAction:(UIPinchGestureRecognizer *)pinch {
+    if (pinch.state == UIGestureRecognizerStateBegan) {
+        _scaleBoforePinch = _currentScale;
+        _innerBoundsBeforeGesture = _innerBounds;
+    } else if (pinch.state == UIGestureRecognizerStateChanged) {
+        CGFloat pinchScale = [pinch scale];
+        CGFloat resultScale = _scaleBoforePinch * pinchScale;
+        if (resultScale>_maxScale) {
+            return;
+        }
+        if (resultScale < _minScale) {
+            return;
+        }
+        _currentScale = resultScale;
+        // 这里需要计算 content 缩放后 innerBounds 的 bounds
+        CGRect resultRect = CGRectMake(
+                                       CGRectGetMinX(_innerBoundsBeforeGesture) + (CGRectGetWidth(_innerBoundsBeforeGesture)* (1-1/[pinch scale])/2),
+                                       CGRectGetMinY(_innerBoundsBeforeGesture) + (CGRectGetHeight(_innerBoundsBeforeGesture)* (1-1/[pinch scale])/2),
+                                       CGRectGetWidth(_innerBoundsBeforeGesture)/pinchScale,
+                                       CGRectGetHeight(_innerBoundsBeforeGesture)/pinchScale
+                                       );
+        _innerBounds = [self checkBoundsEdge:resultRect];
+        [self setNeedsDisplay];
+    } else {
+        // TODO: 判断边缘并回弹(可以考虑在 0.3s 内)
+        _scaleBoforePinch = _currentScale;
+        _innerBoundsBeforeGesture = _innerBounds;
+    }
+}
+
 - (void)tapRecogAction:(UITapGestureRecognizer *)tap {
     //拿到点击的 view 的坐标
     CGPoint location = [tap locationInView:self];
@@ -187,6 +215,11 @@
     }
 }
 
+
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    return YES;
+}
 // 判断缩放边界是否需要贴边处理,并返回需要的 rect
 - (CGRect)checkBoundsEdge:(CGRect)resultRect {
     
@@ -201,7 +234,7 @@
     CGFloat tMargin = _contentInsets.top/_currentScale;
     CGFloat bMargin = _contentInsets.bottom/_currentScale;
     
-    if ((contentSize.width+lMargin+rMargin) < CGRectGetWidth(_innerBounds)) {
+    if ((contentSize.width+lMargin+rMargin) < CGRectGetWidth(resultRect)) {
         // 内宽度小于屏幕宽度
         x = -lMargin;
     } else {
@@ -214,9 +247,9 @@
         }
     }
     
-    if ((contentSize.height+tMargin+bMargin) < CGRectGetHeight(_innerBounds)) {
-        // 内宽度小于屏幕宽度
-        //需要左对齐
+    if ((contentSize.height+tMargin+bMargin) < CGRectGetHeight(resultRect)) {
+        // 内高度小于屏幕宽度
+        //需要上对齐
         y = -tMargin;
     } else {
         //只需要考虑边界, 按照边界对齐
@@ -228,38 +261,6 @@
         }
     }
     return CGRectMake(x, y, width, height);
-}
-
-- (void)pinchRecogAction:(UIPinchGestureRecognizer *)pinch {
-    if (pinch.state == UIGestureRecognizerStateBegan) {
-        _scaleBoforePinch = _currentScale;
-        _innerBoundsBeforeGesture = _innerBounds;
-    } else if (pinch.state == UIGestureRecognizerStateChanged) {
-        CGFloat resultScale = _scaleBoforePinch * [pinch scale];
-        if (resultScale>_maxScale) {
-            return;
-        }
-        if (resultScale < _minScale) {
-            return;
-        }
-        _currentScale = resultScale;
-        // 这里需要计算 content 缩放后 innerBounds 的 bounds
-        CGRect resultRect = CGRectMake(
-                                  CGRectGetMinX(_innerBoundsBeforeGesture) + (CGRectGetWidth(_innerBoundsBeforeGesture)* (1-1/[pinch scale])/2),
-                                  CGRectGetMinY(_innerBoundsBeforeGesture) + (CGRectGetHeight(_innerBoundsBeforeGesture)* (1-1/[pinch scale])/2),
-                                  CGRectGetWidth(_innerBoundsBeforeGesture)/[pinch scale],
-                                  CGRectGetHeight(_innerBoundsBeforeGesture)/[pinch scale]
-                                  );
-        _innerBounds = [self checkBoundsEdge:resultRect];
-        [self setNeedsDisplay];
-    } else {
-        // TODO: 判断边缘并回弹(可以考虑在 0.3s 内)
-        _scaleBoforePinch = _currentScale;
-        _innerBoundsBeforeGesture = _innerBounds;
-    }
-}
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    return YES;
 }
 /*
 #pragma mark - View Touch Events 用于处理用户是否处于点击状态中
