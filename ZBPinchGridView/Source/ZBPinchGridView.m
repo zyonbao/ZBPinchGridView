@@ -45,7 +45,7 @@
     _itemHeight = 60;
     _marginH = 4;
     _marginV = 4;
-    _contentInsets = UIEdgeInsetsMake(20, 20, 2, 2);
+    _contentInsets = UIEdgeInsetsMake(20, 20, 0, 0);
     _innerBounds = CGRectZero;
     
     _currentScale = 1.0f;
@@ -60,7 +60,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    _innerBounds = (CGRect){-_contentInsets.left, -_contentInsets.top,CGRectGetWidth(self.frame),CGRectGetHeight(self.frame)};
+    _innerBounds = (CGRect){_innerBounds.origin.x, _innerBounds.origin.y,CGRectGetWidth(self.frame)/_currentScale,CGRectGetHeight(self.frame)/_currentScale};
     _minScale = (CGRectGetHeight(self.frame)-_contentInsets.top-_contentInsets.bottom)/(_rowsCount * (_itemHeight + _marginV));
 }
 
