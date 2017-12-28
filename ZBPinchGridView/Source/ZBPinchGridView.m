@@ -22,6 +22,8 @@
     UIPanGestureRecognizer *_panRecognizer;
     UIPinchGestureRecognizer *_pinchRecognizer;
     UITapGestureRecognizer *_tapRecognizer;
+    
+    BOOL _hadLayout;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -39,6 +41,7 @@
 }
 
 - (void)initialConfig {
+    _hadLayout = NO;
     _rowsCount = 20;
     _columnsCount = 36;
     _itemWidth = 60;
@@ -46,11 +49,11 @@
     _marginH = 4;
     _marginV = 4;
     _contentInsets = UIEdgeInsetsMake(20, 20, 0, 0);
-    _innerBounds = CGRectZero;
-    
     _currentScale = 1.0f;
     _minScale = 0.1f;
     _maxScale = 1.0f;
+    
+    _innerBounds = (CGRect){_contentInsets.left/_currentScale, _contentInsets.top/_currentScale, 0, 0};
 }
 
 - (CGSize)contentSize {
@@ -60,8 +63,24 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    _innerBounds = (CGRect){_innerBounds.origin.x, _innerBounds.origin.y,CGRectGetWidth(self.frame)/_currentScale,CGRectGetHeight(self.frame)/_currentScale};
+    if (_hadLayout) {
+        _innerBounds = (CGRect){
+            _innerBounds.origin.x,
+            _innerBounds.origin.y,
+            CGRectGetWidth(self.frame)/_currentScale,
+            CGRectGetHeight(self.frame)/_currentScale};
+        
+    } else {
+        _innerBounds = (CGRect){
+            _contentInsets.left/_currentScale,
+            _contentInsets.top/_currentScale,
+            CGRectGetWidth(self.frame)/_currentScale,
+            CGRectGetHeight(self.frame)/_currentScale};
+        
+    }
     _minScale = (CGRectGetHeight(self.frame)-_contentInsets.top-_contentInsets.bottom)/(_rowsCount * (_itemHeight + _marginV));
+    
+    _hadLayout = YES;
 }
 
 - (void)initialRecognizers {
