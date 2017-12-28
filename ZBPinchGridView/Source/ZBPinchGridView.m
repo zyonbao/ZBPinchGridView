@@ -85,6 +85,7 @@
 // 即: content 的坐标也要转换成当前 View 的尺寸单位, 如果 content 进行了缩放, 则需要再缩放到 View 的坐标内, 再计算当前 View 的 innerBounds.
 - (void)drawRect:(CGRect)rect {
     CGContextRef context =  UIGraphicsGetCurrentContext();
+    CGContextClearRect(context, rect);
     // Drawing code
     CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextSetFillColorWithColor(context, [UIColor blueColor].CGColor);
