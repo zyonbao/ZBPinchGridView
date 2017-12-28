@@ -46,7 +46,7 @@
     _marginH = 4;
     _marginV = 4;
     _contentInsets = UIEdgeInsetsMake(20, 20, 0, 0);
-    _innerBounds = CGRectZero;
+    _innerBounds = (CGRect){_contentInsets.left, _contentInsets.top, 0, 0};
     
     _currentScale = 1.0f;
     _minScale = 0.1f;
