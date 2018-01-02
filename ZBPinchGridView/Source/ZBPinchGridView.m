@@ -53,7 +53,7 @@
     _minScale = 0.1f;
     _maxScale = 1.0f;
     
-    _innerBounds = (CGRect){_contentInsets.left/_currentScale, _contentInsets.top/_currentScale, 0, 0};
+    _innerBounds = (CGRect){-_contentInsets.left/_currentScale, -_contentInsets.top/_currentScale, 0, 0};
 }
 
 - (CGSize)contentSize {
@@ -72,8 +72,8 @@
         
     } else {
         _innerBounds = (CGRect){
-            _contentInsets.left/_currentScale,
-            _contentInsets.top/_currentScale,
+            -_contentInsets.left/_currentScale,
+            -_contentInsets.top/_currentScale,
             CGRectGetWidth(self.frame)/_currentScale,
             CGRectGetHeight(self.frame)/_currentScale};
         

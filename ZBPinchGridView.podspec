@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ZBPinchGridView"
-  s.version      = "0.0.4a"
+  s.version      = "0.0.5"
   s.summary      = "ZBPinchGridView is used for show zoomabled grids."
 
   # This description is used to generate tags and improve search results.
